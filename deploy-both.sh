@@ -25,15 +25,15 @@ echo "Starting container python_app..."
 
 if [[ $_nameOfContainerpy == '' ]]; then
   docker container run -d -p 5000:5000 \
-  --name hello-python -e "APP_HOST=$(hostname)" \
-  -e APP_VERSION=latest $_dockerimagepy:$_dockertag
+  --name hello-python -e "HOST_NAME=$(hostname)" \
+  -e MY_TAG=latest $_dockerimagepy:$_dockertag
 else
   echo "Remove container is running with same name"
   _idOfContainerpy=$(docker ps | grep hello-python | awk '{print $1}')
   docker container stop $_idOfContainerpy && docker container rm $_idOfContainerpy
   docker container run -d -p 5000:5000 \
-  --name hello-python -e "APP_HOST=$(hostname)" \
-  -e APP_VERSION=latest $_dockerimagepy:$_dockertag
+  --name hello-python -e "HOST_NAME=$(hostname)" \
+  -e MY_TAG=latest $_dockerimagepy:$_dockertag
 fi
 
 if [[ $? -eq 0 ]]; then
