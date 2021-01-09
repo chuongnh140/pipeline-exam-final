@@ -11,7 +11,7 @@ pipeline {
 
     stages
     {
-      stage('Build and Deploy')
+      stage('Build App')
       {
         steps {
           script {
