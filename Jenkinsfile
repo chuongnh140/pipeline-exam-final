@@ -18,7 +18,7 @@ pipeline {
             if (params.APP_BUILD == "NodeJS") {
               sh '''
                     echo "NodeJS is building..."
-                    ./nodejs/build.sh "${env.BUILD_ID}"
+                    ./nodejs/build.sh ${env.BUILD_ID}
                     '''
             }
             else if (params.APP_BUILD == "Python") {
