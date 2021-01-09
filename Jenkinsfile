@@ -28,10 +28,10 @@ pipeline {
                     """
             }
             else{
-              sh '''
+              sh """
                     echo "Starting build Python_App and Nodejs_APP"
-                    ./build-both.sh
-                    '''
+                    ./build-both.sh ${env.BUILD_ID}
+                    """
             }
           }
         }

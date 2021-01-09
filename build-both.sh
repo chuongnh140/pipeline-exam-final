@@ -2,20 +2,21 @@
 echo "##############################"
 echo "######## BUILD STAGE #########"
 echo "##############################"
+_tagnow=$1
 _dockerimagepy=chuongnh140/hello-python
 _dockerimagejs=chuongnh140/hello-node
 _dockertag=latest
 _dockerlogin=chuongnh140
 _dockerpasswd=nhcnhc1020@@
 #build python
-cd python && docker build -t $_dockerimagepy .
-docker tag $_dockerimagepy $_dockerimagepy:$_dockertag
+cd python && docker build -t $_dockerimagepy:$_tagnow .
+docker tag $_dockerimagepy:$_tagnow $_dockerimagepy:$_dockertag
 
 echo "Done build Python App"
 
 #build nodejs
-cd ../nodejs && docker build -t $_dockerimagejs .
-docker tag $_dockerimagejs $_dockerimagejs:$_dockertag
+cd ../nodejs && docker build -t $_dockerimagejs:$_tagnow .
+docker tag $_dockerimagejs:$_tagnow $_dockerimagejs:$_dockertag
 
 echo "Done build Nodejs App"
 
