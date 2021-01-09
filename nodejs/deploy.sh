@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "##############################"
+echo "######## DEPLOY STAGE ########"
+echo "##############################"
 _nameOfContainer=$(docker ps | grep hello-node)
 
 echo "Deploy is starting..."
