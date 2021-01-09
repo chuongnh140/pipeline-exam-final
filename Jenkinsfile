@@ -22,10 +22,10 @@ pipeline {
                     """
             }
             else if (params.APP_BUILD == "Python") {
-              sh '''
+              sh """
                     echo "Python is building..."
-                    ./python/build.sh
-                    '''
+                    ./python/build.sh ${env.BUILD_ID}
+                    """
             }
             else{
               sh '''
