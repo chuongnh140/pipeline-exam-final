@@ -1,0 +1,75 @@
+FINAL EXAM: 06/01/2021
+
+1) Pipeline nodejs + python (8đ):
+Pipeline khi click chạy sẽ có parameters cho người dùng chọn: nodejs, python, all
+    - Nếu click chọn "nodejs" thì chỉ build, deploy mỗi app nodejs
+    - Nếu click chọn "python" thì chỉ build, deploy mỗi app python
+    - Nếu click chọn "all" thì chỉ build, deploy cả app nodejs và app python
+Phần build app sẽ build 1 node cố định: ví dụ node1
+Phần deploy app sẽ deploy ở 1 node khác: ví dụ node2
+Sau phần build, thì docker image sẽ được  push lên DockerHub với tag là "latest"
+
+    -----
+    Bản nháp lời giải thích thêm: Xem lại video để hiểu rõ hơn    
+        Clone: app nodejs: https://github.com/johnpapa/node-hello
+
+        build at node1 (node1 install docker): docker build -t <name>:<tag> .
+        docker tag <name>:<tag> <url-docker-hub:name>:<latest>
+        docker push <nodejs>:<latest> -> Docker Hub
+
+        deploy: at node2: docker run <name>:<tag> -p <host_port>:<container_port> -e APP_VERSION=latest -e APP_HOST="hostname_node_2"
+
+        -> access web: http://ipnode2:3000 -> Hello World latest jenkins01(-> hostname -f)
+
+
+        python: same step: clone, build, deploy: https://www.wintellect.com/containerize-python-app-5-minutes/ 
+        -> access web: http://ipnode2:5000 -> Hello World jenkins01 jenkins01(-> hostname -f)
+
+        # Mã giả gợi ý:
+        pipeline
+            parameters { choice(name: 'CHOICES', choices: ['nodejs', 'python', 'all'], description: '') }
+        {
+            if CHOICES = "nodejs"
+                stage 'Build Nodejs'
+                {
+                    ...
+                }
+            if CHOICES = "nodejs"s
+             stage 'Build Python'
+            {
+                ...
+            }
+            if CHOICES = "all"
+             stage 'Build all'
+            {
+                ...
+            }
+        }
+    ---
+2) Phần viết script(2d):
+    Viết scrip (ngôn ngữ nào cũng dc): script bỏ vào crontab ở máy node2; 1h chạy một lần
+    script: sẽ kiểm tra là trên dockerhub có docker image mới được push lên hay ko?
+    Nếu có, thì xoá cái container đang chạy đi -> pull image mới về -> run lên lại
+    Nếu ko, in ra message: Không có image mới dc push -> no deploy.
+
+    Demo: node1: edit Dockerfile nodejs/python: -> push dockerhub:latest 
+    script kiểm tra có image mới -> pull về node 2 -> deploy node2
+
+    Gợi ý:
+    1. Node2: Kiểm tra cái container đang chạy sài docker image nào (-> ID1)
+    2. Dockerhub: API để get info nodejs:latest -> (ID2)
+    curl http://api.docker -image nodejs:latest 
+    if ID1 != ID2:
+        deploy new
+    else:
+        no deploy
+    
+    Phần nâng cao (ko bắt buộc làm): script mỗi lần chạy có thể output log tới /var/log/<name>.log
+    [9:20 AM] [INFO] Deploy new image. ..
+    [9:20 AM] [INFO] Success deploy new image. ..
+    [10:20 AM] [INFO] Deploy new image. ..
+    [10:20 AM] [ERROR] Failed new image. ..
+    ...
+
+Lưu ý: tất cả source code của bài final exame được lưu trên github cá nhân của từng HV.
+
