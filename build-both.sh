@@ -7,7 +7,7 @@ _dockerimagepy=chuongnh140/hello-python
 _dockerimagejs=chuongnh140/hello-node
 _dockertag=latest
 _dockerlogin=chuongnh140
-_dockerpasswd=nhcnhc1020@@
+_dockerpasswd=----------
 #build python
 cd python && docker build -t $_dockerimagepy:$_tagnow .
 docker tag $_dockerimagepy:$_tagnow $_dockerimagepy:$_dockertag
